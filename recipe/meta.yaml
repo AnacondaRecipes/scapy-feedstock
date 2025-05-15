@@ -11,25 +11,25 @@ source:
 
 build:
   number: 0
-  noarch: python
+  skip: True  # [py<37]
   entry_points:
     - scapy = scapy.main:interact
-    - UTscapy = scapy.tools.UTscapy:main
-  script: "python -m pip install . --no-deps --no-build-isolation -vv"
+  script: "{{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation"
 
 requirements:
   host:
     - pip
     - python
+    - wheel
+    - setuptools >=62.0.0
   run:
     - python
-    - ipython
-    - cryptography
-    - matplotlib
-run_constrained:
-  - cryptography >=2.0
+  run_constrained:
+    - cryptography >=2.0
 
 test:
+  requires:
+    - pip
   imports:
     - scapy
     - scapy.arch
@@ -52,18 +52,17 @@ test:
     - scapy.tools
   commands:
     - scapy -h
-    - UTscapy -h
+    - pip check
 
 about:
-  home: "https://scapy.net"
-  license: "GNU General Public v2 (GPLv2)"
-  license_family: "GPL2"
-  license_file: "LICENSE"
-  summary: "Scapy: interactive packet manipulation tool"
-  description: |
-    Scapy is a powerful Python-based interactive packet manipulation program and library.
-  doc_url: "https://scapy.readthedocs.io"
-  dev_url: "https://github.com/secdev/scapy"
+  home: https://scapy.net
+  license: GPLv2
+  license_family: GPL
+  license_file: LICENSE
+  summary: 'Scapy: interactive packet manipulation tool'
+  description: 'Scapy is a powerful Python-based interactive packet manipulation program and library.'
+  doc_url: https://scapy.readthedocs.io
+  dev_url: https://github.com/secdev/scapy
 
 extra:
   recipe-maintainers:
